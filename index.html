@@ -1447,6 +1447,8 @@
   </div>
 
   <script>
+    const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbwwTiGabpZEKGalKS6nMUxaOFV_KkYkviwu1flh0BkibSq6xoXaX2dDXCLWAdMiC3w_MQ/exec";
+
     const levelConfig = [
       { questions: 30, time: 45, requiredClicks: 1, label: "Level 1", maxScore: 30 },
       { questions: 30, time: 35, requiredClicks: 2, label: "Level 2", maxScore: 30 },
@@ -1484,6 +1486,7 @@
     let levelTimeSpent = [0, 0, 0];
     let levelQuestionLogs = [[], [], []];
     let leaderboard = [];
+    let sheetSubmissionDone = false;
 
     const fishRow = document.getElementById("fishRow");
     const clickTray = document.getElementById("clickTray");
@@ -1547,6 +1550,7 @@
       levelTimeSpent = [0, 0, 0];
       levelQuestionLogs = [[], [], []];
       levelEnded = false;
+      sheetSubmissionDone = false;
 
       loadLeaderboard();
       startLevel(0);
@@ -2021,6 +2025,8 @@
       loadLeaderboard();
       renderLeaderboard();
       renderResponseLog();
+
+      submitGameDataToSheet(s);
     }
 
     function getCategory(finalScore) {
@@ -2118,6 +2124,74 @@
           <div class="leader-score">${row.score}</div>
         </div>
       `).join("");
+    }
+
+    function buildSheetPayload(summary) {
+      const playerName = document.getElementById("playerName").value.trim() || "Player";
+      const playerEmail = document.getElementById("playerEmail").value.trim() || "-";
+      const attemptNo = Number(localStorage.getItem("mbd_attempt_counter_v1") || "0");
+
+      const flat = {
+        source: "Match by Direction",
+        timestamp: new Date().toISOString(),
+        localTime: new Date().toLocaleString("id-ID"),
+        playerName,
+        playerEmail,
+        attemptNo,
+        finalScore: summary.finalScore,
+        accuracyScore: summary.accuracyScore,
+        speedScore: summary.speedScore,
+        totalCorrect: summary.totalCorrect,
+        totalWrong: summary.totalWrong,
+        totalSkipped: summary.totalSkipped,
+        totalQuestions: summary.totalQuestions,
+        totalAllowedTime: summary.totalAllowedTime,
+        totalTimeUsed: summary.totalTimeUsed,
+        avgResponseMs: Math.round(average(summary.levelDetails.map(x => x.avgResponseMs))),
+        level1_correct: summary.levelDetails[0]?.correct ?? 0,
+        level1_wrong: summary.levelDetails[0]?.wrong ?? 0,
+        level1_skipped: summary.levelDetails[0]?.skipped ?? 0,
+        level1_accuracy: summary.levelDetails[0]?.accuracyScore ?? 0,
+        level1_speed: summary.levelDetails[0]?.speedScore ?? 0,
+        level1_avgResponseMs: summary.levelDetails[0]?.avgResponseMs ?? 0,
+        level2_correct: summary.levelDetails[1]?.correct ?? 0,
+        level2_wrong: summary.levelDetails[1]?.wrong ?? 0,
+        level2_skipped: summary.levelDetails[1]?.skipped ?? 0,
+        level2_accuracy: summary.levelDetails[1]?.accuracyScore ?? 0,
+        level2_speed: summary.levelDetails[1]?.speedScore ?? 0,
+        level2_avgResponseMs: summary.levelDetails[1]?.avgResponseMs ?? 0,
+        level3_correct: summary.levelDetails[2]?.correct ?? 0,
+        level3_wrong: summary.levelDetails[2]?.wrong ?? 0,
+        level3_skipped: summary.levelDetails[2]?.skipped ?? 0,
+        level3_accuracy: summary.levelDetails[2]?.accuracyScore ?? 0,
+        level3_speed: summary.levelDetails[2]?.speedScore ?? 0,
+        level3_avgResponseMs: summary.levelDetails[2]?.avgResponseMs ?? 0,
+        responseLog: JSON.stringify(levelQuestionLogs),
+        leaderboardSnapshot: JSON.stringify(JSON.parse(localStorage.getItem("mbd_leaderboard_v6") || "[]"))
+      };
+
+      return flat;
+    }
+
+    async function submitGameDataToSheet(summary) {
+      if (sheetSubmissionDone) return;
+      sheetSubmissionDone = true;
+
+      const payload = buildSheetPayload(summary);
+      const body = new URLSearchParams(payload).toString();
+
+      try {
+        await fetch(SHEET_ENDPOINT, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+          },
+          body
+        });
+      } catch (err) {
+        console.error("Gagal mengirim data ke Google Sheet:", err);
+      }
     }
 
     async function shareScore() {
