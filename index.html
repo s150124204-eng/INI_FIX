@@ -1145,10 +1145,12 @@
     @media (max-width: 560px) {
       .controls {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
       }
 
       .dir-btn {
-        min-height: 88px;
+        min-height: 92px;
+        border-radius: 16px;
         padding: 12px 8px 10px;
         gap: 3px;
       }
@@ -1196,15 +1198,15 @@
 
     @media (max-width: 500px) {
       .controls {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         width: 100%;
+        gap: 8px;
       }
 
       .dir-btn {
-        min-height: 78px;
+        min-height: 88px;
+        padding: 11px 8px 9px;
         border-radius: 16px;
-        padding: 11px 10px 9px;
-        gap: 2px;
       }
 
       .dir-icon {
@@ -1226,13 +1228,13 @@
 
     @media (max-width: 390px) {
       .controls {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
       }
 
       .dir-btn {
-        min-height: 74px;
-        border-radius: 16px;
-        padding: 10px 9px 8px;
+        min-height: 82px;
+        padding: 10px 7px 8px;
       }
 
       .dir-icon {
@@ -1240,7 +1242,7 @@
       }
 
       .dir-key {
-        font-size: .7rem;
+        font-size: .69rem;
       }
 
       .dir-label {
