@@ -14,6 +14,8 @@
       --warn: #ffd56f;
       --bad: #ff8e8e;
       --shadow: 0 20px 50px rgba(0, 0, 0, .22);
+      --card: rgba(255, 255, 255, .06);
+      --card-border: rgba(255, 255, 255, .09);
     }
 
     * { box-sizing: border-box; }
@@ -59,7 +61,7 @@
 
     .hero, .game-shell, .result-shell {
       background: linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .05));
-      border: 1px solid rgba(255, 255, 255, .09);
+      border: 1px solid var(--card-border);
       border-radius: 28px;
       box-shadow: var(--shadow);
       overflow: hidden;
@@ -122,8 +124,8 @@
     }
 
     .instruction {
-      background: rgba(255, 255, 255, .06);
-      border: 1px solid rgba(255, 255, 255, .09);
+      background: var(--card);
+      border: 1px solid var(--card-border);
       border-radius: 20px;
       padding: 16px 14px;
       text-align: left;
@@ -329,8 +331,8 @@
     }
 
     .progress-card {
-      background: rgba(255, 255, 255, .06);
-      border: 1px solid rgba(255, 255, 255, .08);
+      background: var(--card);
+      border: 1px solid var(--card-border);
       border-radius: 22px;
       padding: 16px;
       display: grid;
@@ -440,6 +442,8 @@
       text-align: center;
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
       transition: all .16s ease;
+      line-height: 1.35;
+      word-break: break-word;
     }
 
     .click-slot.empty { opacity: .55; }
@@ -496,6 +500,8 @@
       font-weight: 700;
       font-size: .95rem;
       text-align: center;
+      max-width: 680px;
+      line-height: 1.5;
     }
 
     .controls {
@@ -510,19 +516,33 @@
       border-radius: 22px;
       background: linear-gradient(180deg, rgba(255, 255, 255, .14), rgba(255, 255, 255, .07));
       color: white;
-      min-height: 118px;
+      min-height: 124px;
       cursor: pointer;
       box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, .08);
       position: relative;
       overflow: hidden;
-      display: grid;
-      place-items: center;
-      transition: transform .12s ease, background .12s ease, box-shadow .12s ease, filter .12s ease;
       border: 1px solid rgba(255, 255, 255, .10);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 16px 12px 14px;
+      text-align: center;
+      transition: transform .12s ease, background .12s ease, box-shadow .12s ease, filter .12s ease;
     }
 
     .dir-btn:hover { transform: translateY(-1px); filter: brightness(1.04); }
     .dir-btn:active { transform: translateY(1px) scale(.99); }
+
+    .dir-btn > div:first-child {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      width: 100%;
+    }
 
     .dir-icon {
       font-size: 3rem;
@@ -531,22 +551,23 @@
     }
 
     .dir-key {
-      margin-top: 6px;
+      margin-top: 2px;
       font-size: .88rem;
       font-weight: 800;
       color: rgba(255, 255, 255, .83);
       letter-spacing: .3px;
+      line-height: 1.2;
     }
 
     .dir-label {
-      position: absolute;
-      bottom: 10px;
-      left: 0;
-      right: 0;
+      position: static;
+      margin-top: 2px;
       text-align: center;
       font-size: .78rem;
-      color: rgba(255, 255, 255, .68);
+      color: rgba(255, 255, 255, .72);
       font-weight: 700;
+      line-height: 1.2;
+      white-space: nowrap;
     }
 
     .dir-btn.active {
@@ -646,6 +667,7 @@
     .leader-name {
       color: var(--text);
       text-align: left;
+      line-height: 1.35;
     }
 
     .leader-score {
@@ -984,8 +1006,9 @@
       }
 
       .dir-btn {
-        min-height: 92px;
+        min-height: 104px;
         border-radius: 18px;
+        padding: 14px 10px 12px;
       }
 
       .dir-icon {
@@ -997,7 +1020,6 @@
       }
 
       .dir-label {
-        bottom: 8px;
         font-size: .72rem;
       }
 
@@ -1126,7 +1148,21 @@
       }
 
       .dir-btn {
-        min-height: 84px;
+        min-height: 88px;
+        padding: 12px 8px 10px;
+        gap: 3px;
+      }
+
+      .dir-icon {
+        font-size: 2rem;
+      }
+
+      .dir-key {
+        font-size: .75rem;
+      }
+
+      .dir-label {
+        font-size: .69rem;
       }
 
       .screen-title {
@@ -1167,10 +1203,12 @@
       .dir-btn {
         min-height: 78px;
         border-radius: 16px;
+        padding: 11px 10px 9px;
+        gap: 2px;
       }
 
       .dir-icon {
-        font-size: 2rem;
+        font-size: 1.9rem;
       }
 
       .dir-key {
@@ -1178,8 +1216,7 @@
       }
 
       .dir-label {
-        font-size: .7rem;
-        bottom: 7px;
+        font-size: .68rem;
       }
 
       .click-slot {
@@ -1195,10 +1232,11 @@
       .dir-btn {
         min-height: 74px;
         border-radius: 16px;
+        padding: 10px 9px 8px;
       }
 
       .dir-icon {
-        font-size: 1.9rem;
+        font-size: 1.8rem;
       }
 
       .dir-key {
@@ -1206,8 +1244,7 @@
       }
 
       .dir-label {
-        font-size: .68rem;
-        bottom: 6px;
+        font-size: .66rem;
       }
 
       .question-card {
@@ -1476,6 +1513,11 @@
     function formatMs(ms) {
       const sec = ms / 1000;
       return `${sec.toFixed(sec < 10 ? 2 : 1)} dtk`;
+    }
+
+    function formatTargetSequence(targets) {
+      if (!targets || !targets.length) return "-";
+      return targets.map(d => directionLabels[d]).join(" → ");
     }
 
     function clamp(n, min, max) {
@@ -1904,10 +1946,6 @@
             `;
           }
 
-          const answerKey = q.targets && q.targets.length
-            ? `Kunci: ${q.targets.map(d => directionLabels[d]).join(" → ")}`
-            : "Kunci: -";
-
           const clickText = q.clicks.map(c =>
             `${c.clickNo}. ${directionLabels[c.pressed]} ${c.correct ? "✓" : "✕"} @ ${formatMs(c.responseMs)}`
           ).join(" · ");
@@ -1916,7 +1954,7 @@
             <div class="response-item ${q.correct ? "ok" : "bad"}">
               <strong>#${q.questionNo}</strong> — ${q.correct ? "Benar" : "Salah"} · ${formatMs(q.totalResponseMs)}
               <div class="response-sub">
-                ${answerKey}
+                Kunci: ${formatTargetSequence(q.targets)}
                 ${clickText ? " · Klik: " + clickText : ""}
               </div>
             </div>
