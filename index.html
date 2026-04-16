@@ -1158,22 +1158,44 @@
       }
     }
 
-    @media (max-width: 420px) {
-      .dir-icon {
-        font-size: 2rem;
-      }
-
-      .dir-key {
-        font-size: .74rem;
+    @media (max-width: 390px) {
+      .controls {
+        grid-template-columns: 1fr;
       }
 
       .dir-btn {
-        min-height: 78px;
+        min-height: 76px;
         border-radius: 16px;
       }
 
+      .dir-icon {
+        font-size: 1.9rem;
+      }
+
+      .dir-key {
+        font-size: .72rem;
+      }
+
+      .dir-label {
+        font-size: .7rem;
+        bottom: 7px;
+      }
+
       .click-slot {
-        font-size: .75rem;
+        font-size: .74rem;
+      }
+
+      .question-card {
+        padding: 9px;
+      }
+
+      .leader-item {
+        grid-template-columns: 26px 1fr;
+      }
+
+      .leader-score {
+        grid-column: 2 / 3;
+        justify-self: end;
       }
     }
   </style>
@@ -1261,7 +1283,6 @@
             <p class="question-title">Ikuti urutan arah yang muncul dengan klik yang tepat.</p>
 
             <div class="question-meta">
-              <span class="meta-chip" id="questionTargetInfo">Target soal: -</span>
               <span class="meta-chip" id="questionResponseInfo">Klik -</span>
             </div>
 
@@ -1417,7 +1438,6 @@
     const questionCounter = document.getElementById("questionCounter");
     const clickCounter = document.getElementById("clickCounter");
     const liveResponseInfo = document.getElementById("liveResponseInfo");
-    const questionTargetInfo = document.getElementById("questionTargetInfo");
     const questionResponseInfo = document.getElementById("questionResponseInfo");
 
     function isValidEmail(email) {
@@ -1562,7 +1582,6 @@
       fishRow.innerHTML = "";
       currentTargets.forEach((dir) => fishRow.appendChild(renderDuck(dir)));
 
-      questionTargetInfo.textContent = `Target soal: ${formatTargetSequence(currentTargets)}`;
       questionResponseInfo.textContent = `Klik 0 / ${cfg.requiredClicks}`;
       questionResponseInfo.className = "meta-chip";
       liveResponseInfo.textContent = "Respon klik: -";
@@ -1629,7 +1648,6 @@
 
       clearInterval(timerId);
 
-      questionTargetInfo.textContent = "Target soal: -";
       questionResponseInfo.textContent = "Klik -";
       questionResponseInfo.className = "meta-chip";
       liveResponseInfo.textContent = "Respon klik: -";
