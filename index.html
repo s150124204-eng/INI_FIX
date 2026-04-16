@@ -1158,18 +1158,19 @@
       }
     }
 
-    @media (max-width: 390px) {
+    @media (max-width: 500px) {
       .controls {
         grid-template-columns: 1fr;
+        width: 100%;
       }
 
       .dir-btn {
-        min-height: 76px;
+        min-height: 78px;
         border-radius: 16px;
       }
 
       .dir-icon {
-        font-size: 1.9rem;
+        font-size: 2rem;
       }
 
       .dir-key {
@@ -1184,18 +1185,37 @@
       .click-slot {
         font-size: .74rem;
       }
+    }
+
+    @media (max-width: 390px) {
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      .dir-btn {
+        min-height: 74px;
+        border-radius: 16px;
+      }
+
+      .dir-icon {
+        font-size: 1.9rem;
+      }
+
+      .dir-key {
+        font-size: .7rem;
+      }
+
+      .dir-label {
+        font-size: .68rem;
+        bottom: 6px;
+      }
 
       .question-card {
-        padding: 9px;
+        padding: 8px;
       }
 
-      .leader-item {
-        grid-template-columns: 26px 1fr;
-      }
-
-      .leader-score {
-        grid-column: 2 / 3;
-        justify-self: end;
+      .click-slot {
+        font-size: .72rem;
       }
     }
   </style>
@@ -1456,11 +1476,6 @@
     function formatMs(ms) {
       const sec = ms / 1000;
       return `${sec.toFixed(sec < 10 ? 2 : 1)} dtk`;
-    }
-
-    function formatTargetSequence(targets) {
-      if (!targets || !targets.length) return "-";
-      return targets.map(d => directionLabels[d]).join(" → ");
     }
 
     function clamp(n, min, max) {
@@ -1881,14 +1896,17 @@
               ? `Sebagian klik: ${q.clicks.map(c => `${c.clickNo}. ${directionLabels[c.pressed]} @ ${formatMs(c.responseMs)}`).join(" · ")}`
               : "Tidak sempat dijawab.";
 
-            const targetText = q.targets && q.targets.length ? `Target: ${formatTargetSequence(q.targets)}` : "";
             return `
               <div class="response-item skip">
                 <strong>#${q.questionNo}</strong> — Dilewati
-                <div class="response-sub">${targetText}${targetText ? " · " : ""}${clickInfo}</div>
+                <div class="response-sub">${clickInfo}</div>
               </div>
             `;
           }
+
+          const answerKey = q.targets && q.targets.length
+            ? `Kunci: ${q.targets.map(d => directionLabels[d]).join(" → ")}`
+            : "Kunci: -";
 
           const clickText = q.clicks.map(c =>
             `${c.clickNo}. ${directionLabels[c.pressed]} ${c.correct ? "✓" : "✕"} @ ${formatMs(c.responseMs)}`
@@ -1898,7 +1916,7 @@
             <div class="response-item ${q.correct ? "ok" : "bad"}">
               <strong>#${q.questionNo}</strong> — ${q.correct ? "Benar" : "Salah"} · ${formatMs(q.totalResponseMs)}
               <div class="response-sub">
-                Target: ${formatTargetSequence(q.targets)}
+                ${answerKey}
                 ${clickText ? " · Klik: " + clickText : ""}
               </div>
             </div>
